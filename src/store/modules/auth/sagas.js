@@ -4,7 +4,12 @@ import { toast } from 'react-toastify';
 import api from '~/services/api';
 import history from '~/services/history';
 
-import { ACTIONS_TYPE, signInSuccess, signFailure } from './actions';
+import { ACTIONS_TYPE as persistActions } from '../persist/actions';
+import {
+  ACTIONS_TYPE as authActions,
+  signInSuccess,
+  signFailure,
+} from './actions';
 
 export function* signIn({ payload }) {
   try {
@@ -22,6 +27,8 @@ export function* signIn({ payload }) {
       return;
     }
 
+    api.defaults.headers.Authorization = `Bearer ${token.accessToken}`;
+
     yield put(signInSuccess(token, user));
 
     history.push('/dashboard');
@@ -31,4 +38,36 @@ export function* signIn({ payload }) {
   }
 }
 
-export default all([takeLatest(ACTIONS_TYPE.SIGN_IN_REQUEST, signIn)]);
+export function* signUp({ payload }) {
+  try {
+    const { name, email, password } = payload;
+
+    yield call(api.post, 'user', {
+      name,
+      email,
+      password,
+      provider: true,
+    });
+
+    history.push('/');
+  } catch (err) {
+    toast.error('Falha no cadastro, verifique seus dados');
+    yield put(signFailure());
+  }
+}
+
+export function setToken({ payload }) {
+  if (!payload) return;
+
+  const { token } = payload.auth;
+
+  if (token) {
+    api.defaults.headers.Authorization = `Bearer ${token.accessToken}`;
+  }
+}
+
+export default all([
+  takeLatest(persistActions.REHYDRATE, setToken),
+  takeLatest(authActions.SIGN_IN_REQUEST, signIn),
+  takeLatest(authActions.SIGN_UP_REQUEST, signUp),
+]);
