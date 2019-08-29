@@ -14,7 +14,7 @@ export default function Routes() {
       <Route path="/register" component={SignUp} />
       <Route path="/dashboard" component={Dashboard} isPrivate />
       <Route path="/profile" component={Profile} isPrivate />
-      <Route component={() => <h1>404</h1>}></Route>
+      <Route component={() => <h1>404</h1>} />
     </Switch>
-  )
+  );
 }
