@@ -44,12 +44,6 @@ module.exports = {
     "import/no-named-as-default-member": "off",
     "import/no-named-as-default": "off",
     "import/named": "off",
-    "import/no-unresolved": [
-      "error",
-      {
-        "ignore": ["~"]
-      }
-    ],
 
     "no-console": ["error", { "allow": ["tron"] }],
     "no-param-reassign": "off",
