@@ -17,6 +17,8 @@ export function* updateProfile({ payload }) {
       ...(rest.oldPassword ? rest : {}),
     };
 
+    console.tron.log('profile', profile);
+
     const response = yield call(api.put, 'user', profile);
 
     toast.success('Perfil atualizado com sucesso!');
