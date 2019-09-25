@@ -2,10 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useField } from '@rocketseat/unform';
 
-import {
-  ACTIONS_TYPE as userActions,
-  updateProfileSuccess,
-} from '~/store/modules/user/actions';
+import { updateProfileSuccess } from '~/store/modules/user/actions';
 
 import api from '~/services/api';
 
